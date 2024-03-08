@@ -36,7 +36,7 @@ const server = http.createServer( (req, res) => {
                 console.log(now)
             })
         }
-
+        readAsync ()
     }
 
 })

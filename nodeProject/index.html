@@ -42,24 +42,6 @@
 
     <script>
         document.getElementById("async").addEventListener("click", readAsync)
-
-        function readAsync (){
-            let sent = ''
-
-            req.on('data', chunk => {
-            sent += chunk
-            console.log('Feltöltött fájl tartalma: ' , sent)
-            })
-
-            req.on('end', () => {
-                res.writeHead(302, {Location: '/'})
-                res.end()
-        
-                // log('Hiba az átirányítás során')
-                const now = new Date().toLocaleString('hu-HU')
-                console.log(now)
-            })
-        }
     </script>
 
 </body>
