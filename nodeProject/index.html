@@ -14,19 +14,20 @@
     <h1>Fájlműveletek</h1>
 
     <h2>Fájl beolvasás</h2>
+
     <h3>szinkron</h3>
-    <form method="post" enctype="multipart/form-data">
-        <label for="file"></label>
-        <input id="file" name="file" type="file"> 
+    <form action="/uploadSync" method="post" enctype="multipart/form-data">
+        <label for="fileSync"></label>
+        <input id="fileSync" name="fileSync" type="file"> 
         <br><br>
-        <button type="submit">Beolvas szinkron</button>
+        <button type="submit" id="sync">Beolvas szinkron</button>
     </form>
     <hr>
    
     <h3>Aszinkron</h3>
-    <form method="post" enctype="multipart/form-data">
-        <label for="file"></label>
-        <input id="file" name="file" type="file"> 
+    <form action="/uploadAsync" method="post" enctype="multipart/form-data">
+        <label for="fileAsync"></label>
+        <input id="fileAsync" name="fileAsync" type="file"> 
         <br><br>
         <button type="submit" id="async">Beolvas Aszinkron</button>
     </form>
@@ -41,7 +42,7 @@
     <button>Másolás Aszinkron</button>
 
     <script>
-        document.getElementById("async").addEventListener("click", readAsync)
+        // document.getElementById("async").addEventListener("click", readAsync)
     </script>
 
 </body>

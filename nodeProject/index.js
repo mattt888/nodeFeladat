@@ -13,11 +13,24 @@ const server = http.createServer( (req, res) => {
     if (req.method === 'GET') {
 
         if (req.url === '/') {
-            utils.getView('/index.html', res)
+            ///////////////////////////////////
+            // utils.getView('/index.html', res)
+            ///////////////////////////////////
+            fs.readFile(__dirname + '/index.html', { encoding: 'utf8' }, (err, data) => {
+
+                if (err) {
+                    console.error(`Hiba történt az olvasás során: ${err}`)
+                } else {
+                    // console.log('A fájl tartalma:', data);
+                    res.write(data)
+                }
+                res.end()
+            })
+            ///////////////////////////////////////
         }
     }
 
-    else if ( req.method === 'POST' ) {
+    else if ( req.method === 'POST' && req.url === '/uploadAsync') {
 
         function readAsync (){
             let sent = ''
@@ -38,6 +51,12 @@ const server = http.createServer( (req, res) => {
         }
         readAsync ()
     }
+
+    else if ( req.method === 'POST' && req.url === '/uploadSync') {
+        
+    }
+
+
 
 })
 server.listen(port, () => {
