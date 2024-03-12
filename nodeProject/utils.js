@@ -7,7 +7,7 @@ module.exports = {
         fs.readFile(__dirname + filename, { encoding: 'utf8' }, (err, data) => {
 
             if (err) {
-                console.error(`Hiba történt az olvasás során: ${err}`)
+                console.error(`Hiba történt az oldalbetöltés során: ${err}`)
             } else {
                 // console.log('A fájl tartalma:', data);
                 res.write(data)
@@ -28,7 +28,7 @@ module.exports = {
                 log('Olvas AAszinkron')
                 log('Fájlnév:', filename)
                 log('Tartalma:', data)
-                log('------------------------------------------')
+                // log('------------------------------------------')
             }
         })
     },
@@ -39,20 +39,20 @@ module.exports = {
             log('Olvas SZSZinkron')
             log('Fájlnév:', filename)
             log('Tartalma:', data)
-            log('------------------------------------------')
+            // log('------------------------------------------')
         } catch (error) {
             console.error("Hiba a fájl szinkron beolvasása során:", error)
         }
     },
 
-    write_Async : function(fajlNev, tartalom) {
+    write_Async : function(filename_To_Write, tartalom) {
 
-        fs.writeFile(fajlNev, tartalom, (err) => {
+        fs.writeFile(filename_To_Write, tartalom, (err) => {
             if (err) {
                 console.error('Hiba történt a fájl írása során:', err)
             } else {
-                log(`Ír AAszinkron \nFájlnév:`, fajlNev , '\nTartalma:', tartalom)
-                log('------------------------------------------')
+                log(`Ír AAszinkron \nFájlnév:`, filename_To_Write , '\nTartalma:', tartalom)
+                // log('------------------------------------------')
             }
         })
     },
@@ -63,7 +63,7 @@ module.exports = {
             log('Ír SZSZinkron')
             log('Fájlnév:', filename_To_Write)
             log('Tartalma:', data)
-            log('------------------------------------------')
+            // log('------------------------------------------')
         } catch (error){
             console.error("Hiba a szinkron fájl írása során:", error)
         }
@@ -84,7 +84,7 @@ module.exports = {
                 } catch (error) {
                     console.error("Hiba a szinkron fájl beolvasása során:", error)
                 }
-                log('------------------------------------------')
+                // log('------------------------------------------')
             }
             })
     },
@@ -102,12 +102,14 @@ module.exports = {
             } catch (error) {
                 console.error("Hiba a szinkron fájl beolvasása során:", error)
             }
-            log('------------------------------------------')
+            // log('------------------------------------------')
         } catch (error){
             console.error("Hiba a fájl szinkron másolása során:", error)
         }
+    },
+
+    redirection : function(res){
+        res.writeHead(302, {Location: '/'})
+        res.end()
     }
-
-
-
 }

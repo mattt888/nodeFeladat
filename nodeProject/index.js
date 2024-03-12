@@ -11,42 +11,60 @@ const server = http.createServer( (req, res) => {
     res.writeHead( 200, {'Content-Type': 'text/html; charset=utf-8'})
 
     if (req.method === 'GET' && req.url === '/') {
-
-            log('=====================================================')
-            
-            utils.getView('/index.html', res)
-            utils.read_Async ('/beolvasFajl.txt')
-            utils.read_Sync('./beolvasFajl.txt')
-
-            // Írás SZinkron:
-            const filename_To_Write = 'write.txt'
-            let data = "SZSZinkron ÍRÁS, ékezetes szöveg íéáőúűóüööüóúőűáéí"
-            utils.write_Sync(filename_To_Write, data)
-
-            // Írás Aszinkron:
-            data = 'AAszinkron ÍRÁS __ Árvíztűrő tükörfúrógép'
-            utils.write_Async(filename_To_Write, data)
-
-            // Másolás Szinkron:
-            const sourceFile = './copyFROM/copyFileFROM.txt';
-            const destinationFile = './copyTO/copyFileTO.txt';
-            utils.copy_Sync (sourceFile, destinationFile)
-
-            // Másolás szinkron
-            utils.copy_Async(sourceFile, destinationFile)
-            
-
-            setTimeout(() => log('*****************************************'), 1500)
-
+         log('=====================================================')
+         utils.getView('/index.html', res)
     }
 
-    
     else if ( req.method === 'POST') {
 
+        const file_To_Write = 'write.txt'
+        const data = "ÍRÁS, ékezetes szöveg íéáőúűóüööüóúőűáéí 333333"
+        
+        const sourceFile = './copyFROM/copyFileFROM.txt';
+        const destinationFile = './copyTO/copyFileTO.txt';
+
+        switch (req.url) {
+            // Olvas SZinkron
+            case '/readSync': 
+                utils.read_Sync('./beolvasFajl.txt')
+                utils.redirection(res)
+                break;
+
+            // Olvas Aszinkron
+            case '/readAsync': 
+                utils.read_Async ('/beolvasFajl.txt')
+                utils.redirection(res)
+                break;
+
+            // Ír SZinkron
+            case '/writeSync':
+                utils.write_Sync(file_To_Write, data)
+                utils.redirection(res)
+                break;
+
+            // Ír Aszinkron
+            case '/writeAsync':
+                utils.write_Async(file_To_Write, data)
+                utils.redirection(res)
+                break;
+
+            // Másolás Szinkron
+            case '/copySync':
+                utils.copy_Sync (sourceFile, destinationFile)
+                utils.redirection(res)
+                break;
+
+            // Másol Aszinkron
+            case '/copyAsync':
+                utils.copy_Async(sourceFile, destinationFile)
+                utils.redirection(res)
+                break;
+
+            default: 
+                utils.getView('/index.html', res)
+                break;
+        }
     }
-
-
-
 
 })
 server.listen(port, () => {
