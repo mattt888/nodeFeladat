@@ -10,27 +10,33 @@ const server = http.createServer( (req, res) => {
 
     res.writeHead( 200, {'Content-Type': 'text/html; charset=utf-8'})
 
-    if (req.method === 'GET') {
+    if (req.method === 'GET' && req.url === '/') {
 
-
-        if (req.url === '/') {
-            log('+++++++++++++++++++++++++++++++++++++++++++')
+            log('=====================================================')
             
             utils.getView('/index.html', res)
-            utils.readAsync ('/beolvasFajl.txt')
-            utils.readSync('./beolvasFajl.txt')
+            utils.read_Async ('/beolvasFajl.txt')
+            utils.read_Sync('./beolvasFajl.txt')
 
-            const fajlNev = 'write_AAsync.txt'
-            const tartalom = 'AAszinkron ÍRÁS  íéáőúűóüööüóúőűáéí  33333333'
-            utils.writeFile_Async(fajlNev, tartalom)
+            // Írás SZinkron:
+            const filename_To_Write = 'write.txt'
+            let data = "SZSZinkron ÍRÁS, ékezetes szöveg íéáőúűóüööüóúőűáéí"
+            utils.write_Sync(filename_To_Write, data)
 
-            const filename_To_Write_SYNC = 'writeSYNC.txt'
-            const data = "SZSZinkron ÍRÁS ___ ékezetes szöveg űúóüőáéí    33333333"
-            utils.writeFile_Sync(filename_To_Write_SYNC, data)
+            // Írás Aszinkron:
+            data = 'AAszinkron ÍRÁS __ Árvíztűrő tükörfúrógép'
+            utils.write_Async(filename_To_Write, data)
 
+            // Másolás Szinkron:
+            const sourceFile = './copyFROM/copyFileFROM.txt';
+            const destinationFile = './copyTO/copyFileTO.txt';
+            utils.copy_Sync (sourceFile, destinationFile)
 
+            // Másolás szinkron
+            utils.copy_Async(sourceFile, destinationFile)
+            
 
-        }
+            setTimeout(() => log('*****************************************'), 1500)
 
     }
 
@@ -38,8 +44,6 @@ const server = http.createServer( (req, res) => {
     else if ( req.method === 'POST') {
 
     }
-
-
 
 
 
