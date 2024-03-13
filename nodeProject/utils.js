@@ -3,33 +3,43 @@ const { log } = require('node:console')
 
 module.exports = {
 
+    getView_SYNC : function  (eredmeny, res) {
+        const data = fs.readFileSync(__dirname + '/index.html', { encoding: 'utf8' });
+    
+        if (data) {
+            const finaldata = data.replace('</p>', eredmeny)
+            res.write(finaldata);
+        } else {
+            console.log('Hiba keletkezett a folyamat során');
+        }
+        res.end();
+    },
+
     getView : function (filename, res){
         fs.readFile(__dirname + filename, { encoding: 'utf8' }, (err, data) => {
-
+            
             if (err) {
                 console.error(`Hiba történt az oldalbetöltés során: ${err}`)
             } else {
-                // console.log('A fájl tartalma:', data);
                 res.write(data)
             }
             res.end()
         })
-
-        // ezzel is jó lenne így is működik:
-        // fs.createReadStream(__dirname + '/index.html').pipe(res)
     },
 
     // Fájl Szinkron beolvasása
-    read_Async : function (filename){
+    read_Async : function (filename, res){
         fs.readFile(__dirname + filename, { encoding: 'utf8' }, (err, data) => {
             if (err) {
-                console.error(`Hiba történt az olvasás során: ${err}`)
+                console.error(`Hiba a fájl aszinkron olvasása során: ${err}`)
             } else {
                 log('Olvas AAszinkron')
                 log('Fájlnév:', filename)
                 log('Tartalma:', data)
-                // log('------------------------------------------')
+                log('=====================================================')
+                res.write(data)
             }
+            res.end()
         })
     },
 
@@ -39,21 +49,23 @@ module.exports = {
             log('Olvas SZSZinkron')
             log('Fájlnév:', filename)
             log('Tartalma:', data)
-            // log('------------------------------------------')
+            return `<li>${data}</li>`
         } catch (error) {
             console.error("Hiba a fájl szinkron beolvasása során:", error)
         }
     },
 
-    write_Async : function(filename_To_Write, tartalom) {
+    write_Async : function(file_To_Write, data_To_Write, res) {
 
-        fs.writeFile(filename_To_Write, tartalom, (err) => {
+        fs.writeFile(file_To_Write, data_To_Write, res, (err) => {
             if (err) {
                 console.error('Hiba történt a fájl írása során:', err)
             } else {
-                log(`Ír AAszinkron \nFájlnév:`, filename_To_Write , '\nTartalma:', tartalom)
-                // log('------------------------------------------')
+                log(`Ír AAszinkron \nFájlnév:`, file_To_Write , '\nTartalma:', data_To_Write)
+                log('=====================================================')
+                res.write(data_To_Write)
             }
+            res.end()
         })
     },
 
@@ -63,13 +75,13 @@ module.exports = {
             log('Ír SZSZinkron')
             log('Fájlnév:', filename_To_Write)
             log('Tartalma:', data)
-            // log('------------------------------------------')
+            return `<li>${data}</li>`
         } catch (error){
             console.error("Hiba a szinkron fájl írása során:", error)
         }
     },
     
-    copy_Async : function (sourceFile, destinationFile) {
+    copy_Async : function (sourceFile, destinationFile, res) {
         fs.copyFile(sourceFile, destinationFile, (err) => {
             if (err) {
                 console.error(`Hiba történt a fájl másolásakor: ${err}`)
@@ -81,11 +93,12 @@ module.exports = {
                     const data = fs.readFileSync(destinationFile, "utf8")
                     log('Kiolvasás Fájlnév:', destinationFile)
                     log('Kiolvasott Fájl Tartalma:', data)
+                    res.write(data)
                 } catch (error) {
-                    console.error("Hiba a szinkron fájl beolvasása során:", error)
+                    console.error("Hiba a fájl szinkron beolvasása során:", error)
                 }
-                // log('------------------------------------------')
             }
+            res.end()
             })
     },
 
@@ -99,17 +112,12 @@ module.exports = {
                 const data = fs.readFileSync(destinationFile, "utf8")
                 log('Kiolvasás Fájlnév:', destinationFile)
                 log('Kiolvasott Fájl Tartalma:', data)
+                return `<li>${data}</li>`
             } catch (error) {
                 console.error("Hiba a szinkron fájl beolvasása során:", error)
             }
-            // log('------------------------------------------')
         } catch (error){
             console.error("Hiba a fájl szinkron másolása során:", error)
         }
-    },
-
-    redirection : function(res){
-        res.writeHead(302, {Location: '/'})
-        res.end()
     }
 }

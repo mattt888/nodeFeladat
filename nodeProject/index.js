@@ -2,7 +2,6 @@ const http = require('node:http')
 require('dotenv').config()
 const port = process.env.PORT || 3000
 const fs = require('node:fs')
-// const querystring = require('querystring')
 const { log } = require('node:console')
 const utils = require('./utils')
 
@@ -11,14 +10,14 @@ const server = http.createServer( (req, res) => {
     res.writeHead( 200, {'Content-Type': 'text/html; charset=utf-8'})
 
     if (req.method === 'GET' && req.url === '/') {
-         log('=====================================================')
-         utils.getView('/index.html', res)
+        log('=====================================================')
+        utils.getView('/index.html', res)
     }
 
     else if ( req.method === 'POST') {
 
         const file_To_Write = 'write.txt'
-        const data = "ÍRÁS, ékezetes szöveg íéáőúűóüööüóúőűáéí 333333"
+        const data_To_Write = "Írás fájl, ékezetes szöveg íéáőúűóüööüóúőűáéí 000000000\n" + new Date().toLocaleString('hu-HU')
         
         const sourceFile = './copyFROM/copyFileFROM.txt';
         const destinationFile = './copyTO/copyFileTO.txt';
@@ -26,38 +25,41 @@ const server = http.createServer( (req, res) => {
         switch (req.url) {
             // Olvas SZinkron
             case '/readSync': 
-                utils.read_Sync('./beolvasFajl.txt')
-                utils.redirection(res)
+                const eredmeny_Read_Sync = utils.read_Sync('./beolvasFajl.txt')
+                log('eredmeny_Read_Sync:', eredmeny_Read_Sync)
+                log('=====================================================')
+                utils.getView_SYNC(eredmeny_Read_Sync, res)
                 break;
 
             // Olvas Aszinkron
-            case '/readAsync': 
-                utils.read_Async ('/beolvasFajl.txt')
-                utils.redirection(res)
+            case '/readAsync':
+                utils.read_Async ('/beolvasFajl.txt', res)
                 break;
 
             // Ír SZinkron
             case '/writeSync':
-                utils.write_Sync(file_To_Write, data)
-                utils.redirection(res)
+                const eredmeny_Write_Sync = utils.write_Sync(file_To_Write, data_To_Write)
+                log('eredmeny_Write_Sync:', eredmeny_Write_Sync)
+                log('=====================================================')
+                utils.getView_SYNC(eredmeny_Write_Sync, res)
                 break;
 
             // Ír Aszinkron
             case '/writeAsync':
-                utils.write_Async(file_To_Write, data)
-                utils.redirection(res)
+                utils.write_Async(file_To_Write, data_To_Write, res)
                 break;
 
-            // Másolás Szinkron
+            // Másol Szinkron
             case '/copySync':
-                utils.copy_Sync (sourceFile, destinationFile)
-                utils.redirection(res)
+                const eredmeny_Copy_Sync = utils.copy_Sync (sourceFile, destinationFile)
+                log('eredmeny_Copy_Sync:', eredmeny_Copy_Sync)
+                log('=====================================================')
+                utils.getView_SYNC(eredmeny_Copy_Sync, res)
                 break;
 
             // Másol Aszinkron
             case '/copyAsync':
-                utils.copy_Async(sourceFile, destinationFile)
-                utils.redirection(res)
+                utils.copy_Async(sourceFile, destinationFile, res)
                 break;
 
             default: 
