@@ -46,60 +46,8 @@ const server = http.createServer( (req, res) => {
                         utils.getView_SYNC(data, res)
                     }
                 }
-
+                
                 utils.read_Async(processFile)
-            
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// működik, 2.verzió
-                // function read_Async(callback) {
-                //     fs.readFile(__dirname + '/beolvasFajl.txt', { encoding: 'utf8' }, (err, data) => {
-                //         if (err) {
-                //             console.error(`Hiba a fájl aszinkron olvasása során: ${err}`)
-                //             callback(err, null)
-                //         } else {
-                //             console.log('Olvas AAszinkron')
-                //             console.log('Fájlnév:', '/beolvasFajl.txt')
-                //             console.log('Tartalma:', data)
-                //             data = `<li>${data}</li>`
-                //             callback(null, data)
-                //             console.log('=====================================================')
-                //         }
-                //     })
-                // }
-                
-                // read_Async((err, data) => {
-                //     if (err) {
-                //     } else {
-                //         console.log('Feldolgozott adat:', data)
-                //         utils.getView_SYNC(data, res)
-                //     }
-                // })
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// működik, 3.verzió:
-                // async function readFile() {
-                //     try {
-                //         const data = await fs.promises.readFile(__dirname + '/beolvasFajl.txt', { encoding: 'utf8' })
-                //         log('Olvas AAszinkron')
-                //         log('Fájlnév:', '/beolvasFajl.txt')
-                //         log('Tartalma:', data)
-                //         return `<li>${data}</li>`
-                //     } catch (err) {
-                //         console.error(`Hiba a fájl aszinkron olvasása során: ${err}`)
-                //         throw err
-                //     }
-                // }
-                
-                // readFile()
-                //     .then(data => {
-                //         log('eredmeny_Read_AASync:', data)
-                //         log('=====================================================')
-                //         utils.getView_SYNC(data, res)
-                //     })
-                //     .catch(error => {
-                //         console.error('Hiba történt:', error)
-                //     })
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 break;
 
             // Ír SZinkron

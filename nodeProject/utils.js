@@ -38,22 +38,6 @@ module.exports = {
             });
         },
 
-////////////////////////////////////////////////////////////
-// ez csak kimenetre küldi
-        // fs.readFile(__dirname + filename, { encoding: 'utf8' }, (err, data) => {
-        //     if (err) {
-        //         console.error(`Hiba a fájl aszinkron olvasása során: ${err}`)
-        //     } else {
-        //         log('Olvas AAszinkron')
-        //         log('Fájlnév:', filename)
-        //         log('Tartalma:', data)
-        //         log('=====================================================')
-        //         res.write(data)
-        //     }
-        //     res.end()
-        // })
-////////////////////////////////////////////////////////////
-
     read_Sync : function(filename){
         try {
             const data = fs.readFileSync(filename, "utf8")
